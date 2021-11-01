@@ -1,6 +1,4 @@
 provider "aws" {
-  # access_key = var.aws-access-key #delete
-  # secret_key = var.aws-secret-key
   region     = var.aws-region
   # version    = "~> 2.0"
 }
@@ -14,27 +12,13 @@ terraform {
     }
   }
   backend "s3" {
-    bucket  = "salvador-montiel-final-capstone-tf-state-backend"
+    bucket  = "smontiel-final-capstone-tf-state-backend"
     encrypt = true
     key     = "terraform.tfstate"
     region  = "us-east-2"
     # dynamodb_table = "terraform-state-lock-dynamo" - uncomment this line once the terraform-state-lock-dynamo has been terraformed
   }
 }
-
-/*resource "aws_dynamodb_table" "dynamodb-terraform-state-lock" {
-  name           = "terraform-state-lock-dynamo"
-  hash_key       = "LockID"
-  read_capacity  = 20
-  write_capacity = 20
-  attribute {
-    name = "LockID"
-    type = "S"
-  }
-  tags = {
-    Name = "DynamoDB Terraform State Lock Table"
-  }
-}*/
 
 module "vpc" {
   source             = "./vpc"
@@ -72,14 +56,6 @@ module "ecr" {
   environment = var.environment
 }
 
-
-/*module "secrets" {
-  source              = "./secrets"
-  name                = var.name
-  environment         = var.environment
-  application-secrets = var.application-secrets
-}*/
-
 module "ecs" {
   source                      = "./ecs"
   name                        = var.name
@@ -100,9 +76,6 @@ module "ecs" {
     value = var.container_port }
   ]
   container_image = var.container_image
-#  container_secrets      = module.secrets.secrets_map
-#  aws_ecr_repository_url = module.ecr.aws_ecr_repository_url
-#  container_secrets_arns = module.secrets.application_secrets_arn
 }
 
 output "app_url" {

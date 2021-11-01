@@ -11,6 +11,3 @@ container_cpu         = 256
 container_memory      = 512
 service_desired_count = 2
 health_check_path     = "/health"
-
-# rds_private_subnet  = "10.0.96.0/20"
-# tsl_certificate_arn = "mycertificatearn"
